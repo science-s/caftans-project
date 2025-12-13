@@ -109,12 +109,19 @@ def update_reservation(reservation_id):
         user_id = get_jwt_identity()
         current_user = User.query.get(user_id)
         
+        if not current_user:
+            return jsonify({'error': 'User not found'}), 404
+        
         reservation = Reservation.query.get(reservation_id)
         if not reservation:
             return jsonify({'error': 'Reservation not found'}), 404
         
+        # Log pour déboguer
+        print(f"Update reservation: user_id={user_id}, reservation.user_id={reservation.user_id}, role={current_user.role}")
+        
         # Users can only update their own reservations, admins can update any
         if current_user.role != 'admin' and reservation.user_id != user_id:
+            print(f"Unauthorized: user {user_id} trying to update reservation {reservation_id} owned by {reservation.user_id}")
             return jsonify({'error': 'Unauthorized'}), 403
         
         data = request.get_json()
@@ -156,30 +163,25 @@ def update_reservation(reservation_id):
         db.session.rollback()
         return jsonify({'error': str(e)}), 500
 
-@bp.route('/<int:reservation_id>/status', methods=['PATCH'])
+@bp.route('delete/<int:reservation_id>/', methods=['PUT'])
 @jwt_required()
-def update_reservation_status(reservation_id):
+def delete_reservation(reservation_id):
     try:
         user_id = get_jwt_identity()
         current_user = User.query.get(user_id)
         
-        if not current_user or current_user.role != 'admin':
-            return jsonify({'error': 'Unauthorized'}), 403
+        if not current_user:
+            return jsonify({'error': 'User not found'}), 404
         
         reservation = Reservation.query.get(reservation_id)
         if not reservation:
             return jsonify({'error': 'Reservation not found'}), 404
         
-        data = request.get_json()
-        if not data or not data.get('status'):
-            return jsonify({'error': 'status is required'}), 400
-        
-        reservation.status = data['status']
+        db.session.delete(reservation)
         db.session.commit()
         
         return jsonify({
-            'message': 'Reservation status updated successfully',
-            'reservation': reservation.to_dict()
+            'message': 'Reservation deleted successfully',
         }), 200
         
     except Exception as e:

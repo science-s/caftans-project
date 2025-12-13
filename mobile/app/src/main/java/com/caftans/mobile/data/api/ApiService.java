@@ -5,6 +5,7 @@ import com.caftans.mobile.data.models.Caftan;
 import com.caftans.mobile.data.models.Category;
 import com.caftans.mobile.data.models.Reservation;
 import com.caftans.mobile.data.models.User;
+import com.google.gson.annotations.SerializedName;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -66,6 +67,9 @@ public interface ApiService {
     
     @PUT("reservations/{id}")
     Call<ApiResponse> updateReservation(@Header("Authorization") String token, @Path("id") int reservationId, @Body ReservationRequest request);
+
+    @PUT("reservations/delete/{id}")
+    Call<ApiResponse> deleteReservation(@Header("Authorization") String token, @Path("id") int reservationId);
     
     // Login request model
     class LoginRequest {
@@ -96,16 +100,34 @@ public interface ApiService {
     
     // Reservation request model
     class ReservationRequest {
+        @SerializedName("caftan_id")
         private int caftan_id;
+        
+        @SerializedName("start_date")
         private String start_date;
+        
+        @SerializedName("end_date")
         private String end_date;
+        
+        @SerializedName("notes")
         private String notes;
+        
+        @SerializedName("status")
+        private String status;
         
         public ReservationRequest(int caftanId, String startDate, String endDate, String notes) {
             this.caftan_id = caftanId;
             this.start_date = startDate;
             this.end_date = endDate;
             this.notes = notes;
+        }
+        
+        public ReservationRequest(int caftanId, String startDate, String endDate, String notes, String status) {
+            this.caftan_id = caftanId;
+            this.start_date = startDate;
+            this.end_date = endDate;
+            this.notes = notes;
+            this.status = status;
         }
         
         public int getCaftan_id() {
@@ -138,6 +160,14 @@ public interface ApiService {
         
         public void setNotes(String notes) {
             this.notes = notes;
+        }
+        
+        public String getStatus() {
+            return status;
+        }
+        
+        public void setStatus(String status) {
+            this.status = status;
         }
     }
 }

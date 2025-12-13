@@ -45,7 +45,11 @@ public class CaftansListActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         progressBar = findViewById(R.id.progressBar);
         
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(false); // Permet le scroll avec contenu dynamique
+        recyclerView.setNestedScrollingEnabled(true); // Active le scroll
+        
         adapter = new CaftanAdapter(caftans, caftan -> {
             Intent intent = new Intent(CaftansListActivity.this, CaftanDetailActivity.class);
             intent.putExtra("caftan_id", caftan.getId());
