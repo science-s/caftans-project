@@ -23,8 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="4dp"
+            style="@style/Widget.Caftans.CardView"
             app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
             <LinearLayout
@@ -37,8 +36,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Résumé de la commande"
+                    android:textAppearance="@style/TextAppearance.Caftans.Title"
                     android:textSize="20sp"
-                    android:textStyle="bold"
                     android:layout_marginBottom="16dp" />
 
                 <LinearLayout
@@ -52,6 +51,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:textColor="@color/black"
                         android:text="Nombre de réservations:"
                         android:textSize="16sp" />
 
@@ -81,6 +81,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:textColor="@color/black"
                         android:text="Total à payer:"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -105,8 +106,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="4dp"
+            style="@style/Widget.Caftans.CardView"
             app:layout_constraintTop_toBottomOf="@+id/summaryCard">
 
             <LinearLayout
@@ -119,8 +119,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Informations de paiement"
+                    android:textAppearance="@style/TextAppearance.Caftans.Title"
                     android:textSize="20sp"
-                    android:textStyle="bold"
                     android:layout_marginBottom="20dp" />
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -128,13 +128,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
                     android:hint="Numéro de carte"
-                    app:boxStrokeColor="@color/primary_color">
+                    style="@style/Widget.Caftans.TextInputLayout">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etCardNumber"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="number"
+                        android:textColor="@color/black"
                         android:maxLength="19" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -144,12 +145,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
                     android:hint="Nom sur la carte"
-                    app:boxStrokeColor="@color/primary_color">
+                    style="@style/Widget.Caftans.TextInputLayout">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etCardHolder"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/black"
                         android:inputType="textCapWords" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -164,14 +166,15 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_marginEnd="8dp"
-                        android:hint="Date d'expiration (MM/AA)"
-                        app:boxStrokeColor="@color/primary_color">
+                        android:hint="Date d'expiration"
+                        style="@style/Widget.Caftans.TextInputLayout">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etExpiryDate"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="number"
+                            android:textColor="@color/black"
                             android:maxLength="5" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -182,13 +185,14 @@
                         android:layout_weight="1"
                         android:layout_marginStart="8dp"
                         android:hint="CVV"
-                        app:boxStrokeColor="@color/primary_color">
+                        style="@style/Widget.Caftans.TextInputLayout">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etCVV"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="numberPassword"
+                            android:textColor="@color/black"
                             android:maxLength="4" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -214,9 +218,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="CONFIRMER LE PAIEMENT"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:padding="16dp"
+            style="@style/Widget.Caftans.Button"
             app:layout_constraintTop_toBottomOf="@+id/progressBar" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

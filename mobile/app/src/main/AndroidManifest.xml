@@ -61,6 +61,10 @@
             android:name=".ui.admin.AdminDashboardActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.cart.CartActivity"
+            android:exported="false"
+            android:theme="@style/Theme.CaftansMobile" />
+        <activity
             android:name=".ui.admin.AdminReservationListActivity"
             android:exported="false" />
         <activity

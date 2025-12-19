@@ -21,71 +21,7 @@
         android:scrollbars="vertical"
         android:clipToPadding="false"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/checkoutLayout" />
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/checkoutLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="8dp"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginBottom="8dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Total"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvTotal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="0.00 MAD"
-                    android:textSize="24sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/primary_color" />
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/tvReservationCount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0 réservation(s)"
-                android:textSize="14sp"
-                android:textColor="@android:color/darker_gray"
-                android:layout_marginBottom="16dp" />
-
-            <Button
-                android:id="@+id/btnPay"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="PAYER MAINTENANT"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:padding="16dp"
-                android:enabled="false" />
-
-        </LinearLayout>
-
-    </com.google.android.material.card.MaterialCardView>
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -84,6 +84,18 @@ def create_reservation():
         
         if start_date < datetime.now().date():
             return jsonify({'error': 'Start date cannot be in the past'}), 400
+
+        # Check for overlapping reservations
+        # Overlap condition: (StartA <= EndB) and (EndA >= StartB)
+        existing_reservation = Reservation.query.filter(
+            Reservation.caftan_id == data['caftan_id'],
+            Reservation.status.in_(['pending', 'approved', 'confirmed', 'completed']),
+            Reservation.start_date <= end_date,
+            Reservation.end_date >= start_date
+        ).first()
+
+        if existing_reservation:
+            return jsonify({'error': 'Ce caftan est déjà réservé pour ces dates.'}), 400
         
         reservation = Reservation(
             user_id=user_id,

@@ -1,16 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.CaftansMobile" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <!-- Base application theme. -->
+    <!-- Base application theme. -->
+    <style name="Theme.CaftansMobile" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primary_color</item>
-        <item name="colorPrimaryDark">@color/primary_dark</item>
-        <item name="colorAccent">@color/accent_color</item>
+        <item name="colorPrimaryVariant">@color/primary_dark</item>
+        <item name="colorOnPrimary">@color/text_on_primary</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/secondary_color</item>
+        <item name="colorSecondaryVariant">@color/secondary_color</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        
+        <!-- Customize your theme here. -->
+        <item name="android:windowBackground">@color/background_neutral</item>
+        
+        <!-- Default Style Overrides -->
+        <item name="materialButtonStyle">@style/Widget.Caftans.Button</item>
+        <item name="textInputStyle">@style/Widget.Caftans.TextInputLayout</item>
+        <item name="cardViewStyle">@style/Widget.Caftans.CardView</item>
     </style>
-    
+
     <style name="Theme.CaftansMobile.Splash" parent="Theme.CaftansMobile">
         <item name="android:windowBackground">@color/primary_color</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <!-- Custom Component Styles -->
+    
+    <!-- Elegant Gold Button -->
+    <style name="Widget.Caftans.Button" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/primary_color</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="cornerRadius">8dp</item>
+        <item name="elevation">4dp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+    </style>
+
+    <style name="Widget.Caftans.Button.Outlined" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:textColor">@color/primary_color</item>
+        <item name="strokeColor">@color/primary_color</item>
+        <item name="strokeWidth">2dp</item>
+    </style>
+
+    <!-- Text Input with Gold/Primary Logic -->
+    <style name="Widget.Caftans.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/primary_color</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="boxStrokeWidthFocused">2dp</item>
+        <item name="hintTextColor">@color/primary_color</item>
+        <item name="android:textColorHint">@color/text_secondary</item>
+        <item name="boxCornerRadiusTopStart">8dp</item>
+        <item name="boxCornerRadiusTopEnd">8dp</item>
+        <item name="boxCornerRadiusBottomStart">8dp</item>
+        <item name="boxCornerRadiusBottomEnd">8dp</item>
+    </style>
+
+    <!-- Elevated Clean Card -->
+    <style name="Widget.Caftans.CardView" parent="Widget.MaterialComponents.CardView">
+        <item name="cardBackgroundColor">@color/surface_white</item>
+        <item name="cardCornerRadius">16dp</item>
+        <item name="cardElevation">4dp</item>
+        <item name="contentPadding">0dp</item>
+        <!-- Fix for NumberFormatException during inflation on some API levels -->
+        <item name="android:stateListAnimator">@null</item>
+    </style>
+
+    <!-- Typography Styles -->
+    <style name="TextAppearance.Caftans.Headline" parent="TextAppearance.MaterialComponents.Headline4">
+        <item name="android:textColor">@color/primary_dark</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">serif</item> <!-- Giving it a fashion serif look -->
+    </style>
+    
+    <style name="TextAppearance.Caftans.Title" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 </resources>
 

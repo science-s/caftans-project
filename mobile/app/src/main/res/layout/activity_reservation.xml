@@ -23,10 +23,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Nom du caftan"
+            android:textAppearance="@style/TextAppearance.Caftans.Headline"
             android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -34,8 +34,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
+            style="@style/Widget.Caftans.TextInputLayout"
             android:hint="Date de début"
-            app:boxStrokeColor="@color/primary_color"
             app:layout_constraintTop_toBottomOf="@+id/tvCaftanName">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -50,8 +50,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
+            style="@style/Widget.Caftans.TextInputLayout"
             android:hint="Date de fin"
-            app:boxStrokeColor="@color/primary_color"
             app:layout_constraintTop_toBottomOf="@+id/layoutStartDate">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -66,8 +66,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
+            style="@style/Widget.Caftans.TextInputLayout"
             android:hint="Notes (optionnel)"
-            app:boxStrokeColor="@color/primary_color"
             app:layout_constraintTop_toBottomOf="@+id/layoutEndDate">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -83,7 +83,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            android:layout_marginBottom="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layoutNotes" />
 
         <Button
@@ -91,8 +91,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Confirmer la réservation"
-            android:textSize="16sp"
-            android:padding="16dp"
+            style="@style/Widget.Caftans.Button"
             app:layout_constraintTop_toBottomOf="@+id/progressBar" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,14 +9,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:gravity="center">
+        android:gravity="center_horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Inscription"
-            android:textSize="32sp"
-            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.Caftans.Headline"
             android:layout_marginTop="48dp"
             android:layout_marginBottom="32dp" />
 
@@ -24,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            app:boxStrokeColor="@color/primary_color">
+            style="@style/Widget.Caftans.TextInputLayout">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etFullName"
@@ -38,7 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            app:boxStrokeColor="@color/primary_color">
+            style="@style/Widget.Caftans.TextInputLayout">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etEmail"
@@ -52,7 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            app:boxStrokeColor="@color/primary_color">
+            style="@style/Widget.Caftans.TextInputLayout">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etPhone"
@@ -66,7 +65,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
-            app:boxStrokeColor="@color/primary_color"
+            style="@style/Widget.Caftans.TextInputLayout"
             app:passwordToggleEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -89,8 +88,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="S'inscrire"
-            android:textSize="16sp"
-            android:padding="16dp" />
+            style="@style/Widget.Caftans.Button" />
 
         <TextView
             android:id="@+id/tvLogin"
@@ -99,7 +97,9 @@
             android:text="Déjà un compte ? Se connecter"
             android:layout_marginTop="16dp"
             android:textSize="14sp"
-            android:textColor="@color/primary_color" />
+            android:textStyle="bold"
+            android:textColor="@color/primary_color"
+            android:padding="8dp"/>
 
     </LinearLayout>
 

@@ -1,8 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary_color">#B98B5E</color>
-    <color name="primary_dark">#8B6B3D</color>
-    <color name="accent_color">#D4A574</color>
+    <!-- Moroccan Caftan Palette -->
+    <color name="primary_color">#045D56</color> <!-- Emerald Green -->
+    <color name="primary_dark">#00342F</color> <!-- Deep Green -->
+    <color name="primary_light">#4CB6AC</color>
+    
+    <color name="secondary_color">#1A237E</color> <!-- Royal Blue -->
+    <color name="accent_color">#D4AF37</color> <!-- Gold -->
+    <color name="accent_light">#FFECB3</color> 
+    
+    <color name="background_neutral">#F9F9F4</color> <!-- Ivory/Beige -->
+    <color name="surface_white">#FFFFFF</color>
+    <color name="error_red">#B00020</color>
+    
+    <!-- Text Colors -->
+    <color name="text_primary">#212121</color>
+    <color name="text_secondary">#757575</color>
+    <color name="text_on_primary">#FFFFFF</color>
+
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
 </resources>

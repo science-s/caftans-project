@@ -14,13 +14,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Ajouter/Modifier Caftan"
+            android:textAppearance="@style/TextAppearance.Caftans.Headline"
             android:textSize="24sp"
-            android:textStyle="bold"
             android:layout_marginBottom="24dp" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            style="@style/Widget.Caftans.TextInputLayout"
             android:hint="Nom du Caftan">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -33,6 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            style="@style/Widget.Caftans.TextInputLayout"
             android:hint="Description">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -47,6 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            style="@style/Widget.Caftans.TextInputLayout"
             android:hint="Prix par jour (MAD)">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -60,7 +63,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Image" />
+            android:text="Image"
+            android:textAppearance="@style/TextAppearance.Caftans.Title" />
 
         <ImageView
             android:id="@+id/ivPreview"
@@ -77,13 +81,15 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Choisir une image"
+            style="@style/Widget.Caftans.Button.Outlined"
             android:layout_marginTop="8dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Catégorie" />
+            android:text="Catégorie"
+            android:textAppearance="@style/TextAppearance.Caftans.Title" />
 
         <Spinner
             android:id="@+id/spinnerCategory"
@@ -113,6 +119,7 @@
                 android:layout_weight="1"
                 android:layout_marginEnd="8dp"
                 android:text="Supprimer"
+                style="@style/Widget.Caftans.Button"
                 android:backgroundTint="#F44336"
                 android:visibility="gone"/>
 
@@ -121,7 +128,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Enregistrer" />
+                android:text="Enregistrer"
+                style="@style/Widget.Caftans.Button" />
                 
         </LinearLayout>
 
