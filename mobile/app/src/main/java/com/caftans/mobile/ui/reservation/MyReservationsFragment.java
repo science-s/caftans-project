@@ -81,22 +81,22 @@ public class MyReservationsFragment extends Fragment {
         // Annuler la réservation en mettant le statut à "cancelled"
         ApiService apiService = ApiClient.getApiService();
         
-        // Créer la requête avec le statut cancelled
+        // Créer la requête avec le statut cancelled pour annuler (pas supprimer)
         ApiService.ReservationRequest request = new ApiService.ReservationRequest(
             reservation.getCaftanId(),
             reservation.getStartDate(),
             reservation.getEndDate(),
-            reservation.getNotes() != null ? reservation.getNotes() : ""
+            reservation.getNotes() != null ? reservation.getNotes() : "",
+            "cancelled"  // Définir le statut à cancelled
         );
-        request.setStatus("cancelled");  // Définir le statut après création
         
         Log.d("MyReservations", "Request status: " + request.getStatus());
         Log.d("MyReservations", "Request caftan_id: " + request.getCaftan_id());
         Log.d("MyReservations", "Request start_date: " + request.getStart_date());
         Log.d("MyReservations", "Request end_date: " + request.getEnd_date());
         
-        // Appel API pour annuler
-        apiService.deleteReservation(token, reservation.getId()).enqueue(new Callback<ApiResponse>() {
+        // Appel API pour annuler (mettre à jour le statut à cancelled)
+        apiService.updateReservation(token, reservation.getId(), request).enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                 Log.d("MyReservations", "Response code: " + response.code());

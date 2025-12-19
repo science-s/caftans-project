@@ -5,17 +5,18 @@ import com.google.gson.annotations.SerializedName;
 public class Category {
     @SerializedName("id")
     private int id;
-    
+
     @SerializedName("name")
     private String name;
-    
+
     @SerializedName("description")
     private String description;
-    
+
     @SerializedName("created_at")
     private String createdAt;
 
-    public Category() {}
+    public Category() {
+    }
 
     public int getId() {
         return id;
@@ -48,5 +49,9 @@ public class Category {
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
-}
 
+    @Override
+    public String toString() {
+        return name;
+    }
+}

@@ -29,6 +29,10 @@
         <activity
             android:name=".ui.auth.LoginActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".ui.auth.RegisterActivity"
+            android:exported="false" />
         
         <activity
             android:name=".ui.main.MainActivity"
@@ -52,6 +56,20 @@
             android:exported="false"
             android:theme="@style/Theme.MaterialComponents.NoActionBar"
             android:parentActivityName=".ui.main.MainActivity" />
+        
+        <activity
+            android:name=".ui.admin.AdminDashboardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.admin.AdminReservationListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.admin.AdminCaftanListActivity"
+            android:exported="false" />
+            
+        <activity
+            android:name=".ui.admin.AddEditCaftanActivity"
+            android:exported="false" />
         
         <activity
             android:name=".ui.payment.PaymentActivity"

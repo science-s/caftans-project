@@ -14,11 +14,25 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Connexion"
+            android:text="Inscription"
             android:textSize="32sp"
             android:textStyle="bold"
             android:layout_marginTop="48dp"
             android:layout_marginBottom="32dp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:boxStrokeColor="@color/primary_color">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etFullName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Nom complet"
+                android:inputType="textPersonName" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -32,6 +46,20 @@
                 android:layout_height="wrap_content"
                 android:hint="Email"
                 android:inputType="textEmailAddress" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:boxStrokeColor="@color/primary_color">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Téléphone"
+                android:inputType="phone" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -57,18 +85,18 @@
             android:layout_marginBottom="16dp" />
 
         <Button
-            android:id="@+id/btnLogin"
+            android:id="@+id/btnRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Se connecter"
+            android:text="S'inscrire"
             android:textSize="16sp"
             android:padding="16dp" />
 
         <TextView
-            android:id="@+id/tvRegister"
+            android:id="@+id/tvLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Pas de compte ? S'inscrire"
+            android:text="Déjà un compte ? Se connecter"
             android:layout_marginTop="16dp"
             android:textSize="14sp"
             android:textColor="@color/primary_color" />
@@ -76,4 +104,3 @@
     </LinearLayout>
 
 </ScrollView>
-

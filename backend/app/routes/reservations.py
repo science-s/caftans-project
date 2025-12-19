@@ -3,6 +3,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from app import db
 from app.models import Reservation, Caftan, User
 from datetime import datetime
+from app.utils.decorators import admin_required
 
 bp = Blueprint('reservations', __name__)
 
@@ -36,6 +37,9 @@ def get_reservation(reservation_id):
     try:
         user_id = get_jwt_identity()
         current_user = User.query.get(user_id)
+        
+        if not current_user:
+            return jsonify({'error': 'User not found'}), 404
         
         reservation = Reservation.query.get(reservation_id)
         if not reservation:
@@ -163,7 +167,49 @@ def update_reservation(reservation_id):
         db.session.rollback()
         return jsonify({'error': str(e)}), 500
 
-@bp.route('delete/<int:reservation_id>/', methods=['PUT'])
+@bp.route('/<int:reservation_id>/status', methods=['PATCH'])
+@admin_required()
+def update_reservation_status(reservation_id):
+    try:
+        data = request.get_json()
+        if not data or not data.get('status'):
+            return jsonify({'error': 'Status is required'}), 400
+
+        reservation = Reservation.query.get(reservation_id)
+        if not reservation:
+            return jsonify({'error': 'Reservation not found'}), 404
+        
+        # Admin check is now handled by decorator
+        
+        reservation.status = data['status']
+        db.session.commit()
+        
+        return jsonify({
+            'message': 'Reservation status updated successfully',
+            'reservation': reservation.to_dict()
+        }), 200
+        
+        reservation = Reservation.query.get(reservation_id)
+        if not reservation:
+            return jsonify({'error': 'Reservation not found'}), 404
+        
+        data = request.get_json()
+        if not data or not data.get('status'):
+            return jsonify({'error': 'Status is required'}), 400
+        
+        reservation.status = data['status']
+        db.session.commit()
+        
+        return jsonify({
+            'message': 'Reservation status updated successfully',
+            'reservation': reservation.to_dict()
+        }), 200
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
+@bp.route('/<int:reservation_id>', methods=['DELETE'])
 @jwt_required()
 def delete_reservation(reservation_id):
     try:
@@ -176,6 +222,10 @@ def delete_reservation(reservation_id):
         reservation = Reservation.query.get(reservation_id)
         if not reservation:
             return jsonify({'error': 'Reservation not found'}), 404
+        
+        # Only admins can delete reservations, or users can delete their own
+        if current_user.role != 'admin' and reservation.user_id != int(user_id):
+            return jsonify({'error': 'Unauthorized'}), 403
         
         db.session.delete(reservation)
         db.session.commit()

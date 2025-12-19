@@ -70,7 +70,9 @@ public class CaftansListActivity extends AppCompatActivity {
         progressBar.setVisibility(android.view.View.VISIBLE);
         
         ApiService apiService = ApiClient.getApiService();
-        apiService.getCaftans(categoryId, null, null).enqueue(new Callback<ApiResponse>() {
+        // Passer categoryId seulement s'il est valide (>= 0)
+        Integer catId = categoryId >= 0 ? categoryId : null;
+        apiService.getCaftans(catId, null, null).enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                 progressBar.setVisibility(android.view.View.GONE);

@@ -38,6 +38,12 @@ public class ReservationActivity extends AppCompatActivity {
         caftanId = getIntent().getIntExtra("caftan_id", -1);
         String caftanName = getIntent().getStringExtra("caftan_name");
         
+        if (caftanId == -1) {
+            Toast.makeText(this, "Caftan invalide", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+        
         tokenManager = TokenManager.getInstance(this);
         
         Toolbar toolbar = findViewById(R.id.toolbar);
