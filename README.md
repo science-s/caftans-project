@@ -2,6 +2,10 @@
 
 Application mobile Android développée avec Java et Android Studio, avec un backend Flask et une base de données MySQL.
 
+🎥 **Démonstration de l'application**  
+[Voir la vidéo](assets/demo.mp4)
+
+
 ## 📋 Architecture du Projet
 
 ```
