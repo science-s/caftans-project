@@ -63,6 +63,7 @@ class Caftan(db.Model):
     description = db.Column(db.Text)
     price_per_day = db.Column(db.Numeric(10, 2), nullable=False)
     availability_status = db.Column(db.String(20), default='available', nullable=False)
+    color = db.Column(db.String(50))
     image_url = db.Column(db.String(500))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
@@ -82,7 +83,7 @@ class Caftan(db.Model):
         from app.models import Reservation
         active_reservation = Reservation.query.filter(
             Reservation.caftan_id == self.id,
-            Reservation.status.in_(['pending', 'approved', 'confirmed', 'completed']),
+            Reservation.status.in_(['pending', 'approved', 'confirmed', 'completed', 'paid']),
             Reservation.start_date <= today,
             Reservation.end_date >= today
         ).first()
@@ -99,6 +100,7 @@ class Caftan(db.Model):
             'price_per_day': float(self.price_per_day) if self.price_per_day else 0.0,
             'availability_status': current_status,
             'image_url': self.image_url,
+            'color': self.color,
             'created_at': self.created_at.isoformat() if self.created_at else None
         }
 

@@ -89,7 +89,7 @@ def create_reservation():
         # Overlap condition: (StartA <= EndB) and (EndA >= StartB)
         existing_reservation = Reservation.query.filter(
             Reservation.caftan_id == data['caftan_id'],
-            Reservation.status.in_(['pending', 'approved', 'confirmed', 'completed']),
+            Reservation.status.in_(['pending', 'approved', 'confirmed', 'completed', 'paid']),
             Reservation.start_date <= end_date,
             Reservation.end_date >= start_date
         ).first()
@@ -102,7 +102,7 @@ def create_reservation():
             caftan_id=data['caftan_id'],
             start_date=start_date,
             end_date=end_date,
-            status='pending',
+            status='paid',
             notes=data.get('notes')
         )
         
@@ -147,11 +147,14 @@ def update_reservation(reservation_id):
             if data.get('status'):
                 reservation.status = data['status']
         else:
-            # Regular users can only cancel
-            if data.get('status') == 'cancelled':
+            # Regular users can cancel or confirm (pay)
+            new_status = data.get('status')
+            if new_status == 'cancelled':
                 reservation.status = 'cancelled'
-            elif data.get('status'):
-                return jsonify({'error': 'You can only cancel your reservations'}), 403
+            elif new_status == 'confirmed':
+                reservation.status = 'confirmed'
+            elif new_status:
+                return jsonify({'error': 'You can only cancel or confirm (pay) your reservations'}), 403
         
         if data.get('start_date'):
             try:

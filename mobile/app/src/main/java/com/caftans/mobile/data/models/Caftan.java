@@ -5,32 +5,36 @@ import com.google.gson.annotations.SerializedName;
 public class Caftan {
     @SerializedName("id")
     private int id;
-    
+
     @SerializedName("category_id")
     private int categoryId;
-    
+
     @SerializedName("category_name")
     private String categoryName;
-    
+
     @SerializedName("name")
     private String name;
-    
+
     @SerializedName("description")
     private String description;
-    
+
     @SerializedName("price_per_day")
     private double pricePerDay;
-    
+
     @SerializedName("availability_status")
     private String availabilityStatus;
-    
+
     @SerializedName("image_url")
     private String imageUrl;
-    
+
+    @SerializedName("color")
+    private String color;
+
     @SerializedName("created_at")
     private String createdAt;
 
-    public Caftan() {}
+    public Caftan() {
+    }
 
     public int getId() {
         return id;
@@ -96,6 +100,14 @@ public class Caftan {
         this.imageUrl = imageUrl;
     }
 
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
     public String getCreatedAt() {
         return createdAt;
     }
@@ -103,9 +115,8 @@ public class Caftan {
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
-    
+
     public boolean isAvailable() {
         return "available".equals(availabilityStatus);
     }
 }
-

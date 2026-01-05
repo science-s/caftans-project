@@ -74,7 +74,7 @@ public class AdminCaftanListActivity extends AppCompatActivity implements Caftan
         ApiService apiService = ApiClient.getApiService();
 
         // null for category, search, availability to get all
-        apiService.getCaftans(null, null, null).enqueue(new Callback<ApiResponse>() {
+        apiService.getCaftans(null, null, null, null, null, null).enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                 progressBar.setVisibility(View.GONE);

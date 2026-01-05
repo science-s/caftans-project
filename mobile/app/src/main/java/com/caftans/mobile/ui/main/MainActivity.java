@@ -7,6 +7,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import com.caftans.mobile.R;
+import com.caftans.mobile.data.room.AppDatabase;
+import com.caftans.mobile.data.room.CartDao;
 import com.caftans.mobile.ui.caftan.CategoriesFragment;
 import com.caftans.mobile.ui.reservation.MyReservationsFragment;
 import com.caftans.mobile.ui.profile.ProfileFragment;
@@ -18,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     private android.view.View badgeLayout;
     private com.caftans.mobile.utils.TokenManager tokenManager;
     private BottomNavigationView bottomNavigation;
+    private CartDao cartDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +34,11 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNavigation = findViewById(R.id.bottomNavigation);
         bottomNavigation.setOnItemSelectedListener(this::onNavigationItemSelected);
+        cartDao = AppDatabase.getInstance(this).cartDao();
 
         // Load default fragment
         if (savedInstanceState == null) {
-            loadFragment(new CategoriesFragment());
+            loadFragment(new com.caftans.mobile.ui.home.HomeFragment());
         }
     }
 
@@ -72,43 +76,23 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        com.caftans.mobile.data.api.ApiClient.getApiService().getReservations(token)
-                .enqueue(new retrofit2.Callback<com.caftans.mobile.data.models.ApiResponse>() {
-                    @Override
-                    public void onResponse(retrofit2.Call<com.caftans.mobile.data.models.ApiResponse> call,
-                            retrofit2.Response<com.caftans.mobile.data.models.ApiResponse> response) {
-                        if (response.isSuccessful() && response.body() != null
-                                && response.body().getReservations() != null) {
-                            int count = 0;
-                            for (com.caftans.mobile.data.models.Reservation r : response.body().getReservations()) {
-                                if (!"confirmed".equals(r.getStatus()) && !"cancelled".equals(r.getStatus())
-                                        && !"completed".equals(r.getStatus())) {
-                                    count++;
-                                }
-                            }
+        int count = cartDao.getAll().size();
 
-                            if (count > 0) {
-                                badgeTextView.setVisibility(android.view.View.VISIBLE);
-                                badgeTextView.setText(String.valueOf(count));
-                            } else {
-                                badgeTextView.setVisibility(android.view.View.GONE);
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(retrofit2.Call<com.caftans.mobile.data.models.ApiResponse> call,
-                            Throwable t) {
-                        // Fail silently for badge
-                    }
-                });
+        if (count > 0) {
+            badgeTextView.setVisibility(android.view.View.VISIBLE);
+            badgeTextView.setText(String.valueOf(count));
+        } else {
+            badgeTextView.setVisibility(android.view.View.GONE);
+        }
     }
 
     private boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Fragment fragment = null;
         int itemId = item.getItemId();
 
-        if (itemId == R.id.nav_categories) {
+        if (itemId == R.id.nav_home) {
+            fragment = new com.caftans.mobile.ui.home.HomeFragment();
+        } else if (itemId == R.id.nav_categories) {
             fragment = new CategoriesFragment();
         } else if (itemId == R.id.nav_reservations) {
             fragment = new MyReservationsFragment();
@@ -131,5 +115,18 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+    // Public methods for navigation from HomeFragment
+    public void navigateToCategories() {
+        bottomNavigation.setSelectedItemId(R.id.nav_categories);
+    }
+
+    public void navigateToReservations() {
+        bottomNavigation.setSelectedItemId(R.id.nav_reservations);
+    }
+
+    public void navigateToProfile() {
+        bottomNavigation.setSelectedItemId(R.id.nav_profile);
     }
 }

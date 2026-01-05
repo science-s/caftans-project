@@ -46,10 +46,16 @@
             android:parentActivityName=".ui.main.MainActivity" />
         
         <activity
-            android:name=".ui.reservation.ReservationActivity"
+            android:name=".ui.reservation.ReservationFormActivity"
             android:exported="false"
             android:theme="@style/Theme.MaterialComponents.NoActionBar"
             android:parentActivityName=".ui.caftan.CaftanDetailActivity" />
+
+        <activity
+            android:name=".ui.reservation.ReservationActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MaterialComponents.NoActionBar"
+            android:parentActivityName=".ui.main.MainActivity" />
         
         <activity
             android:name=".ui.caftan.CaftansListActivity"
@@ -83,4 +89,3 @@
     </application>
 
 </manifest>
-

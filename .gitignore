@@ -42,9 +42,21 @@ instance/
 .DS_Store
 Thumbs.db
 
-# Uploads
+# Database
+backend/db/
+*.db
+*.sqlite
+*.sqlite3
+
+# Uploads & Media
 backend/uploads/*
 !backend/uploads/.gitkeep
+backend/caftans_images/
+
+# Test files
+backend/test_*.py
+backend/add_caftans.py
+backend/update_db.py
 
 # Android
 *.iml
@@ -86,4 +98,7 @@ proguard/
 .idea/vcs.xml
 .idea/shelf
 .idea/render.experimental.xml
+
+# Gradle wrapper (keep properties and scripts, ignore jar)
+mobile/gradle/wrapper/gradle-wrapper.jar
 

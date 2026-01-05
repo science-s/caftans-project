@@ -2,10 +2,11 @@ package com.caftans.mobile.data.api;
 
 import com.caftans.mobile.data.models.ApiResponse;
 import com.caftans.mobile.data.models.Caftan;
-import com.caftans.mobile.data.models.Category;
-import com.caftans.mobile.data.models.Reservation;
 import com.caftans.mobile.data.models.User;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -57,7 +58,10 @@ public interface ApiService {
     Call<ApiResponse> getCaftans(
             @Query("category_id") Integer categoryId,
             @Query("search") String search,
-            @Query("availability") String availability);
+            @Query("availability") String availability,
+            @Query("color") String color,
+            @Query("min_price") Double minPrice,
+            @Query("max_price") Double maxPrice);
 
     @GET("caftans/{id}")
     Call<ApiResponse> getCaftan(@Path("id") int caftanId);

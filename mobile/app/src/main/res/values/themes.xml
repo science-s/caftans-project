@@ -2,7 +2,7 @@
 <resources>
     <!-- Base application theme. -->
     <!-- Base application theme. -->
-    <style name="Theme.CaftansMobile" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.CaftansMobile" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primary_color</item>
         <item name="colorPrimaryVariant">@color/primary_dark</item>

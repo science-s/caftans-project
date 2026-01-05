@@ -16,6 +16,9 @@ def get_caftans():
         category_id = request.args.get('category_id', type=int)
         search = request.args.get('search', '')
         availability = request.args.get('availability', '')
+        color = request.args.get('color', '')
+        min_price = request.args.get('min_price', type=float)
+        max_price = request.args.get('max_price', type=float)
         
         query = Caftan.query
         
@@ -33,6 +36,15 @@ def get_caftans():
         
         if availability:
             query = query.filter_by(availability_status=availability)
+
+        if color:
+            query = query.filter(func.lower(Caftan.color) == color.lower())
+
+        if min_price is not None:
+            query = query.filter(Caftan.price_per_day >= min_price)
+
+        if max_price is not None:
+            query = query.filter(Caftan.price_per_day <= max_price)
         
         caftans = query.all()
         
@@ -98,6 +110,7 @@ def create_caftan():
             description=description,
             price_per_day=price,
             availability_status=availability_status,
+            color=request.form.get('color'),
             image_url=image_url
         )
         
@@ -152,6 +165,9 @@ def update_caftan(caftan_id):
                 
         if data.get('availability_status'):
             caftan.availability_status = data['availability_status']
+
+        if data.get('color'):
+            caftan.color = data['color']
             
         # Handle Image Upload
         if 'image' in request.files:

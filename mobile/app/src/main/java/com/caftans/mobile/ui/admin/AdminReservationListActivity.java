@@ -81,15 +81,24 @@ public class AdminReservationListActivity extends AppCompatActivity {
     }
 
     private void showStatusDialog(Reservation reservation) {
-        // Simple implementation: Cycle through statuses or show dialog
-        // For now, let's just make a simple call to approve if pending
-        if ("pending".equals(reservation.getStatus())) {
-            updateStatus(reservation, "confirmed");
-        } else if ("confirmed".equals(reservation.getStatus())) {
-            updateStatus(reservation, "completed");
-        } else {
-            Toast.makeText(this, "Status: " + reservation.getStatus(), Toast.LENGTH_SHORT).show();
-        }
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
+        builder.setTitle("Gérer la réservation");
+        builder.setMessage("Action pour la réservation #" + reservation.getId());
+
+        // Button: Mark as Paid
+        builder.setPositiveButton("Marquer comme Payé", (dialog, which) -> {
+            updateStatus(reservation, "paid");
+        });
+
+        // Button: Cancel
+        builder.setNegativeButton("Annuler la réservation", (dialog, which) -> {
+            updateStatus(reservation, "cancelled");
+        });
+
+        // Button: Close/Dismiss
+        builder.setNeutralButton("Fermer", (dialog, which) -> dialog.dismiss());
+
+        builder.show();
     }
 
     private void updateStatus(Reservation reservation, String newStatus) {
