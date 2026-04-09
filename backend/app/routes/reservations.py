@@ -3,6 +3,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from app import db
 from app.models import Reservation, Caftan, User
 from datetime import datetime
+from app.utils.decorators import admin_required
 
 bp = Blueprint('reservations', __name__)
 
@@ -36,6 +37,9 @@ def get_reservation(reservation_id):
     try:
         user_id = get_jwt_identity()
         current_user = User.query.get(user_id)
+        
+        if not current_user:
+            return jsonify({'error': 'User not found'}), 404
         
         reservation = Reservation.query.get(reservation_id)
         if not reservation:
@@ -80,13 +84,25 @@ def create_reservation():
         
         if start_date < datetime.now().date():
             return jsonify({'error': 'Start date cannot be in the past'}), 400
+
+        # Check for overlapping reservations
+        # Overlap condition: (StartA <= EndB) and (EndA >= StartB)
+        existing_reservation = Reservation.query.filter(
+            Reservation.caftan_id == data['caftan_id'],
+            Reservation.status.in_(['pending', 'approved', 'confirmed', 'completed', 'paid']),
+            Reservation.start_date <= end_date,
+            Reservation.end_date >= start_date
+        ).first()
+
+        if existing_reservation:
+            return jsonify({'error': 'Ce caftan est déjà réservé pour ces dates.'}), 400
         
         reservation = Reservation(
             user_id=user_id,
             caftan_id=data['caftan_id'],
             start_date=start_date,
             end_date=end_date,
-            status='pending',
+            status='paid',
             notes=data.get('notes')
         )
         
@@ -109,12 +125,19 @@ def update_reservation(reservation_id):
         user_id = get_jwt_identity()
         current_user = User.query.get(user_id)
         
+        if not current_user:
+            return jsonify({'error': 'User not found'}), 404
+        
         reservation = Reservation.query.get(reservation_id)
         if not reservation:
             return jsonify({'error': 'Reservation not found'}), 404
         
+        # Log pour déboguer
+        print(f"Update reservation: user_id={user_id}, reservation.user_id={reservation.user_id}, role={current_user.role}")
+        
         # Users can only update their own reservations, admins can update any
         if current_user.role != 'admin' and reservation.user_id != user_id:
+            print(f"Unauthorized: user {user_id} trying to update reservation {reservation_id} owned by {reservation.user_id}")
             return jsonify({'error': 'Unauthorized'}), 403
         
         data = request.get_json()
@@ -124,11 +147,14 @@ def update_reservation(reservation_id):
             if data.get('status'):
                 reservation.status = data['status']
         else:
-            # Regular users can only cancel
-            if data.get('status') == 'cancelled':
+            # Regular users can cancel or confirm (pay)
+            new_status = data.get('status')
+            if new_status == 'cancelled':
                 reservation.status = 'cancelled'
-            elif data.get('status'):
-                return jsonify({'error': 'You can only cancel your reservations'}), 403
+            elif new_status == 'confirmed':
+                reservation.status = 'confirmed'
+            elif new_status:
+                return jsonify({'error': 'You can only cancel or confirm (pay) your reservations'}), 403
         
         if data.get('start_date'):
             try:
@@ -157,22 +183,18 @@ def update_reservation(reservation_id):
         return jsonify({'error': str(e)}), 500
 
 @bp.route('/<int:reservation_id>/status', methods=['PATCH'])
-@jwt_required()
+@admin_required()
 def update_reservation_status(reservation_id):
     try:
-        user_id = get_jwt_identity()
-        current_user = User.query.get(user_id)
-        
-        if not current_user or current_user.role != 'admin':
-            return jsonify({'error': 'Unauthorized'}), 403
-        
+        data = request.get_json()
+        if not data or not data.get('status'):
+            return jsonify({'error': 'Status is required'}), 400
+
         reservation = Reservation.query.get(reservation_id)
         if not reservation:
             return jsonify({'error': 'Reservation not found'}), 404
         
-        data = request.get_json()
-        if not data or not data.get('status'):
-            return jsonify({'error': 'status is required'}), 400
+        # Admin check is now handled by decorator
         
         reservation.status = data['status']
         db.session.commit()
@@ -180,6 +202,51 @@ def update_reservation_status(reservation_id):
         return jsonify({
             'message': 'Reservation status updated successfully',
             'reservation': reservation.to_dict()
+        }), 200
+        
+        reservation = Reservation.query.get(reservation_id)
+        if not reservation:
+            return jsonify({'error': 'Reservation not found'}), 404
+        
+        data = request.get_json()
+        if not data or not data.get('status'):
+            return jsonify({'error': 'Status is required'}), 400
+        
+        reservation.status = data['status']
+        db.session.commit()
+        
+        return jsonify({
+            'message': 'Reservation status updated successfully',
+            'reservation': reservation.to_dict()
+        }), 200
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
+@bp.route('/<int:reservation_id>', methods=['DELETE'])
+@jwt_required()
+def delete_reservation(reservation_id):
+    try:
+        user_id = get_jwt_identity()
+        current_user = User.query.get(user_id)
+        
+        if not current_user:
+            return jsonify({'error': 'User not found'}), 404
+        
+        reservation = Reservation.query.get(reservation_id)
+        if not reservation:
+            return jsonify({'error': 'Reservation not found'}), 404
+        
+        # Only admins can delete reservations, or users can delete their own
+        if current_user.role != 'admin' and reservation.user_id != int(user_id):
+            return jsonify({'error': 'Unauthorized'}), 403
+        
+        db.session.delete(reservation)
+        db.session.commit()
+        
+        return jsonify({
+            'message': 'Reservation deleted successfully',
         }), 200
         
     except Exception as e:

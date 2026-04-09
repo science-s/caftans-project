@@ -3,34 +3,34 @@ package com.caftans.mobile.data.models;
 import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
-public class ApiResponse<T> {
+public class ApiResponse {
     @SerializedName("message")
     private String message;
-    
+
     @SerializedName("access_token")
     private String accessToken;
-    
+
     @SerializedName("user")
     private User user;
-    
+
     @SerializedName("categories")
     private List<Category> categories;
-    
+
     @SerializedName("caftans")
     private List<Caftan> caftans;
-    
+
     @SerializedName("caftan")
     private Caftan caftan;
-    
+
     @SerializedName("reservations")
     private List<Reservation> reservations;
-    
+
     @SerializedName("reservation")
     private Reservation reservation;
-    
+
     @SerializedName("error")
     private String error;
-    
+
     @SerializedName("image_url")
     private String imageUrl;
 
@@ -114,4 +114,3 @@ public class ApiResponse<T> {
         this.imageUrl = imageUrl;
     }
 }
-

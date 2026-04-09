@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.caftans.mobile.R;
@@ -38,8 +39,13 @@ public class LoginActivity extends AppCompatActivity {
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
         progressBar = findViewById(R.id.progressBar);
+        TextView tvRegister = findViewById(R.id.tvRegister);
 
         btnLogin.setOnClickListener(v -> performLogin());
+        tvRegister.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void performLogin() {
@@ -66,7 +72,8 @@ public class LoginActivity extends AppCompatActivity {
 
                 if (response.isSuccessful() && response.body() != null) {
                     ApiResponse apiResponse = response.body();
-                    Log.d("LoginActivity", "Access token: " + (apiResponse.getAccessToken() != null ? "Present" : "Null"));
+                    Log.d("LoginActivity",
+                            "Access token: " + (apiResponse.getAccessToken() != null ? "Present" : "Null"));
                     Log.d("LoginActivity", "User: " + (apiResponse.getUser() != null ? "Present" : "Null"));
                     Log.d("LoginActivity", "Error: " + apiResponse.getError());
                     Log.d("LoginActivity", "Message: " + apiResponse.getMessage());
@@ -77,12 +84,20 @@ public class LoginActivity extends AppCompatActivity {
                         if (apiResponse.getUser() != null) {
                             tokenManager.saveUserId(apiResponse.getUser().getId());
                             tokenManager.saveUserEmail(apiResponse.getUser().getEmail());
+                            tokenManager.saveUserRole(apiResponse.getUser().getRole());
                         }
 
                         Toast.makeText(LoginActivity.this, "Connexion réussie", Toast.LENGTH_SHORT).show();
 
-                        // Navigate to main activity
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        // Navigate based on role
+                        Intent intent;
+                        if (apiResponse.getUser() != null && "admin".equals(apiResponse.getUser().getRole())) {
+                            intent = new Intent(LoginActivity.this,
+                                    com.caftans.mobile.ui.admin.AdminDashboardActivity.class);
+                        } else {
+                            intent = new Intent(LoginActivity.this, MainActivity.class);
+                        }
+
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                         finish();
@@ -101,14 +116,29 @@ public class LoginActivity extends AppCompatActivity {
                     try {
                         if (response.errorBody() != null) {
                             String errorBody = response.errorBody().string();
-                            if (errorBody.contains("error")) {
-                                // Essayer d'extraire le message d'erreur du JSON
-                                if (errorBody.contains("\"error\"")) {
+                            Log.e("LoginActivity", "Error body: " + errorBody);
+
+                            // Essayer d'extraire le message d'erreur du JSON
+                            if (errorBody.contains("\"error\"")) {
+                                try {
+                                    // Essayer de parser le JSON proprement
                                     int start = errorBody.indexOf("\"error\"") + 9;
                                     int end = errorBody.indexOf("\"", start);
                                     if (end > start) {
                                         errorMsg = errorBody.substring(start, end);
+                                    } else {
+                                        // Essayer une autre méthode de parsing
+                                        int colonIndex = errorBody.indexOf(":", errorBody.indexOf("\"error\""));
+                                        if (colonIndex > 0) {
+                                            int quoteStart = errorBody.indexOf("\"", colonIndex) + 1;
+                                            int quoteEnd = errorBody.indexOf("\"", quoteStart);
+                                            if (quoteEnd > quoteStart) {
+                                                errorMsg = errorBody.substring(quoteStart, quoteEnd);
+                                            }
+                                        }
                                     }
+                                } catch (Exception e) {
+                                    Log.e("LoginActivity", "Error parsing error message", e);
                                 }
                             }
                         }
@@ -116,8 +146,9 @@ public class LoginActivity extends AppCompatActivity {
                             errorMsg = response.body().getError();
                         }
                     } catch (Exception e) {
-                        // Ignorer les erreurs de parsing
+                        Log.e("LoginActivity", "Error reading error body", e);
                     }
+                    Log.e("LoginActivity", "Final error message: " + errorMsg);
                     Toast.makeText(LoginActivity.this, errorMsg, Toast.LENGTH_LONG).show();
                 }
             }
@@ -129,7 +160,8 @@ public class LoginActivity extends AppCompatActivity {
                 String errorMsg = "Erreur de connexion au serveur";
                 if (t.getMessage() != null) {
                     Log.e("LoginActivity", "Error message: " + t.getMessage());
-                    if (t.getMessage().contains("Failed to connect") || t.getMessage().contains("Unable to resolve host")) {
+                    if (t.getMessage().contains("Failed to connect")
+                            || t.getMessage().contains("Unable to resolve host")) {
                         errorMsg = "Impossible de se connecter au serveur.\nVérifiez que le serveur Flask est démarré.";
                     } else {
                         errorMsg = "Erreur: " + t.getMessage();
@@ -145,4 +177,3 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setEnabled(!loading);
     }
 }
-

@@ -63,6 +63,7 @@ class Caftan(db.Model):
     description = db.Column(db.Text)
     price_per_day = db.Column(db.Numeric(10, 2), nullable=False)
     availability_status = db.Column(db.String(20), default='available', nullable=False)
+    color = db.Column(db.String(50))
     image_url = db.Column(db.String(500))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
@@ -72,6 +73,24 @@ class Caftan(db.Model):
     favorites = db.relationship('Favorite', backref='caftan', lazy=True, cascade='all, delete-orphan')
     
     def to_dict(self):
+        # Check if currently reserved (dynamic status)
+        current_status = self.availability_status
+        today = datetime.now().date()
+        
+        # Check if there is an active reservation for today
+        # We can't easily query here without circular imports or session issues if detached
+        # But since we are likely inside a session context when calling to_dict on a query result:
+        from app.models import Reservation
+        active_reservation = Reservation.query.filter(
+            Reservation.caftan_id == self.id,
+            Reservation.status.in_(['pending', 'approved', 'confirmed', 'completed', 'paid']),
+            Reservation.start_date <= today,
+            Reservation.end_date >= today
+        ).first()
+        
+        if active_reservation:
+            current_status = 'reserved'
+
         return {
             'id': self.id,
             'category_id': self.category_id,
@@ -79,8 +98,9 @@ class Caftan(db.Model):
             'name': self.name,
             'description': self.description,
             'price_per_day': float(self.price_per_day) if self.price_per_day else 0.0,
-            'availability_status': self.availability_status,
+            'availability_status': current_status,
             'image_url': self.image_url,
+            'color': self.color,
             'created_at': self.created_at.isoformat() if self.created_at else None
         }
 

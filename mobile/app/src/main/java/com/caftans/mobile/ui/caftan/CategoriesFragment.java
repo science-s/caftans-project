@@ -38,7 +38,11 @@ public class CategoriesFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView);
         progressBar = view.findViewById(R.id.progressBar);
         
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(false);
+        recyclerView.setNestedScrollingEnabled(true);
+        
         adapter = new CategoryAdapter(categories, category -> {
             Intent intent = new Intent(getActivity(), CaftansListActivity.class);
             intent.putExtra("category_id", category.getId());
